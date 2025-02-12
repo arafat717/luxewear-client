@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+body {
+  @apply font-serif;
+}
+
+.lobster-two-regular-italic {
+  font-family: "Lobster Two", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.lobster-two-regular {
+  font-family: "Lobster Two", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lobster-two-bold-italic {
+  font-family: "Lobster Two", serif;
+  font-weight: 700;
+  font-style: italic;
+}
