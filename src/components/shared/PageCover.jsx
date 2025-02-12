@@ -8,7 +8,7 @@ const PageCover = ({ title }) => {
         <h1 className="text-xl font-semibold mb-4 ">{title}</h1>
         <div className="flex items-center gap-2">
           <Link to="/">
-            <p>Homepage</p>
+            <p className="hover:text-red-600">Homepage</p>
           </Link>
           <p>
             <IoIosArrowForward></IoIosArrowForward>

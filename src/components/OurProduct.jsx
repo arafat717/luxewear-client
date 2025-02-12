@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetPublice from "../hooks/useGetPublice";
 import ProductCard from "../Ui/ProductCard";
+import { Link } from "react-router-dom";
 
 const OurProduct = () => {
   const [products, setProducts] = useState([]);
@@ -23,6 +24,13 @@ const OurProduct = () => {
         {products.map((item) => (
           <ProductCard key={item._id} item={item}></ProductCard>
         ))}
+      </div>
+      <div className="mb-20 text-center ">
+        <Link to="/shop">
+          <button className="border-b-2 pb-1 border-black transition-all hover:border-red-700 hover:text-red-700">
+            View All Products
+          </button>
+        </Link>
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
 import { Helmet } from "react-helmet";
 import ImageBanner from "./ImageBanner";
 import OurProduct from "./OurProduct";
+import ModelsBanner from "./ModelsBanner";
+import LimitedTime from "./LimitedTime";
+import BlogSection from "./BlogSection";
+import InstragramShop from "./InstragramShop";
 
 const Home = () => {
   return (
@@ -10,6 +14,10 @@ const Home = () => {
       </Helmet>
       <ImageBanner></ImageBanner>
       <OurProduct></OurProduct>
+      <ModelsBanner></ModelsBanner>
+      <LimitedTime></LimitedTime>
+      <BlogSection></BlogSection>
+      <InstragramShop></InstragramShop>
     </>
   );
 };

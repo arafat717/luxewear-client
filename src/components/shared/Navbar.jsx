@@ -41,7 +41,12 @@ const Navbar = () => {
           <NavLink>
             <li>Products</li>
           </NavLink>
-          <NavLink>
+          <NavLink
+            to="/blog"
+            className={({ isActive }) =>
+              `px-4 py-2 rounded ${isActive ? "text-red-700" : ""}`
+            }
+          >
             <li>Blog</li>
           </NavLink>
           <NavLink>
@@ -116,7 +121,7 @@ const Navbar = () => {
             <NavLink className="border-b-2 w-full pb-4">
               <li>Products</li>
             </NavLink>
-            <NavLink className="border-b-2 w-full pb-4">
+            <NavLink to="/blog" className="border-b-2 w-full pb-4">
               <li>Blog</li>
             </NavLink>
             <NavLink className="border-b-2 w-full pb-4">
