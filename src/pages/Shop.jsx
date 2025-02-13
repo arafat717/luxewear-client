@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -6,11 +7,69 @@ import ProductCard from "../Ui/ProductCard";
 import PageCover from "../components/shared/PageCover";
 import { CiFilter } from "react-icons/ci";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [sort, setSort] = useState("");
+  const [size, setSize] = useState();
+  const [brand, setBrand] = useState();
+  console.log(brand);
+
+  const allcategory = products.map((prod) => prod.category);
+  const allBrands = products.map((brd) => brd.brand);
+  // console.log(allBrands);
+  // console.log(allcategory);
+
+  let category = [];
+  for (let i = 0; i < allcategory.length; i++) {
+    let item = allcategory[i];
+    if (!category.includes(item)) {
+      category.push(item);
+    }
+  }
+
+  let brands = [];
+  for (let i = 0; i < allBrands.length; i++) {
+    let item = allBrands[i];
+    if (!brands.includes(item)) {
+      brands.push(item);
+    }
+  }
+  // console.log(brand);
+  // console.log(category);
+
+  let maxPrice = 0;
+  for (let i = 0; i < products.length; i++) {
+    const currentPrice = products[i].discount_price;
+    if (currentPrice > maxPrice) {
+      maxPrice = currentPrice;
+    }
+  }
+
+  let minPrice = Infinity;
+  for (let i = 0; i < products.length; i++) {
+    const currentPrice = products[i].discount_price;
+    if (currentPrice < minPrice) {
+      minPrice = currentPrice;
+    }
+  }
+
+  const [rangePrice, setRangePrice] = useState(maxPrice);
+  // console.log(rangePrice);
+
+  const handleRangeValue = (e) => {
+    let value = e.target.value;
+    setRangePrice(value);
+  };
+
+  useEffect(() => {
+    setRangePrice(maxPrice);
+  }, [maxPrice]);
+
+  // console.log(minPrice);
+  // console.log(maxPrice);
 
   const publiceInstance = useGetPublice();
   useEffect(() => {
@@ -65,7 +124,7 @@ const Shop = () => {
       </div>
 
       {/* sidebar filter start */}
-      <div className="relative">
+      <div className="relative z-50 ">
         {/* Sidebar Overlay */}
         {isOpen && (
           <div
@@ -77,64 +136,100 @@ const Shop = () => {
 
         {/* Sidebar */}
         <div
-          className={`fixed top-0 left-0 h-full w-80 md:w-96 bg-white p-5 shadow-lg z-50 transition-transform transform ${
+          className={`fixed top-0 left-0 h-full w-80 md:w-96 overflow-y-scroll pb-8 bg-white shadow-lg z-50 transition-transform transform ${
             isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           {/* Close Button */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-black text-2xl absolute top-4 right-4"
-          >
-            ×
-          </button>
-
-          <h2 className="text-lg font-semibold mb-4">Filters</h2>
+          <div className="bg-gray-100 flex items-center justify-between px-5 py-3 mb-5">
+            <h2 className="text-lg font-semibold mb-4">Filters</h2>
+            <div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-black text-2xl"
+              >
+                <IoMdClose />
+              </button>
+            </div>
+          </div>
 
           {/* Product Categories */}
-          <div className="mb-4">
-            <h3 className="font-medium">Product Categories</h3>
-            <ul className="space-y-2 text-gray-700">
-              <li>Bags (112)</li>
-              <li>Booking (32)</li>
-              <li>Clothing (42)</li>
-              <li>Women (65)</li>
-              <li>Men (13)</li>
-              <li>Shoes (52)</li>
+          <div className="mb-4 border-b px-5 pb-10">
+            <h3 className="font-semibold text-xl">Product Categories</h3>
+            <ul className="space-y-4 mt-4 text-black ">
+              {brands.slice(0, 10).map((br) => (
+                <li
+                  onClick={() => setBrand(br)}
+                  key={br}
+                  className="cursor-pointer hover:text-red-600"
+                >
+                  {br}
+                </li>
+              ))}
+              {/* <li className="cursor-pointer hover:text-red-600">Bags (112)</li>
+              <li className="cursor-pointer hover:text-red-600">
+                Booking (32)
+              </li>
+              <li className="cursor-pointer hover:text-red-600">
+                Clothing (42)
+              </li>
+              <li className="cursor-pointer hover:text-red-600">Women (65)</li>
+              <li className="cursor-pointer hover:text-red-600">Men (13)</li>
+              <li className="cursor-pointer hover:text-red-600">Shoes (52)</li> */}
             </ul>
           </div>
 
-          {/* Price Range */}
-          <div className="mb-4">
-            <h3 className="font-medium">Price</h3>
-            <input type="range" min="10" max="500" className="w-full" />
-            <div className="flex justify-between">
-              <span>Min: $20</span>
-              <span>Max: $300</span>
+          <div className="px-5">
+            {/* Price Range */}
+            <div className="mb-4 border-b pb-5">
+              <h3 className="font-medium">Price</h3>
+              <input
+                type="range"
+                min={minPrice}
+                max={maxPrice}
+                value={rangePrice}
+                // name="rangePrice"
+                onChange={handleRangeValue}
+                className="w-full text-black"
+              />
+              <div className="flex justify-between">
+                <span>Min: ${minPrice}</span>
+                <span>Max: ${rangePrice}</span>
+              </div>
             </div>
-          </div>
 
-          {/* Size Filter */}
-          <div className="mb-4">
-            <h3 className="font-medium">Size</h3>
-            <div className="flex flex-wrap gap-2">
-              {["XS", "S", "M", "L", "XL", "2XL", "3XL", "Free Size"].map(
-                (size) => (
-                  <button
-                    key={size}
-                    className="border px-3 py-1 rounded-md hover:bg-gray-200"
-                  >
-                    {size}
-                  </button>
-                )
-              )}
+            {/* Size Filter */}
+            <div className="mb-4 border-b pb-4">
+              <h3 className="font-medium mb-3 text-xl">Size</h3>
+              <div className="flex flex-wrap gap-2">
+                {["XS", "S", "M", "L", "XL", "2XL", "3XL", "Free Size"].map(
+                  (size) => (
+                    <button
+                      onClick={() => setSize(size)}
+                      key={size}
+                      className="border p-3 rounded-full  hover:bg-gray-200"
+                    >
+                      <span>{size}</span>
+                    </button>
+                  )
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Reset Filters Button */}
-          <button className="w-full p-2 mt-4 bg-black text-white rounded-md">
-            Reset Filters
-          </button>
+            <div>
+              <h3>Brands</h3>
+              <div>
+                <label>
+                  <input type="checkbox" id="myCheckbox"></input> <p></p>
+                </label>
+              </div>
+            </div>
+
+            {/* Reset Filters Button */}
+            <button className="w-full p-2 mt-4 bg-black text-white rounded-md">
+              Reset Filters
+            </button>
+          </div>
         </div>
       </div>
       {/* sidebar filter end */}

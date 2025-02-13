@@ -24,28 +24,22 @@ const Navbar = () => {
         <div className=" hidden md:flex justify-center items-center list-none gap-7  font-semibold text-black">
           <NavLink
             to="/"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded ${isActive ? "text-red-700" : ""}`
-            }
+            className={({ isActive }) => ` ${isActive ? "text-red-700" : ""}`}
           >
             <li>Home</li>
           </NavLink>
           <NavLink
             to="/shop"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded ${isActive ? "text-red-700" : ""}`
-            }
+            className={({ isActive }) => ` ${isActive ? "text-red-700" : ""}`}
           >
             <li>Shop</li>
           </NavLink>
-          <NavLink>
+          {/* <NavLink>
             <li>Products</li>
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/blog"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded ${isActive ? "text-red-700" : ""}`
-            }
+            className={({ isActive }) => `${isActive ? "text-red-700" : ""}`}
           >
             <li>Blog</li>
           </NavLink>
@@ -118,9 +112,9 @@ const Navbar = () => {
             <NavLink to="/shop" className="border-b-2 w-full pb-4">
               <li>Shop</li>
             </NavLink>
-            <NavLink className="border-b-2 w-full pb-4">
+            {/* <NavLink className="border-b-2 w-full pb-4">
               <li>Products</li>
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/blog" className="border-b-2 w-full pb-4">
               <li>Blog</li>
             </NavLink>
