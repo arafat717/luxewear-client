@@ -64,6 +64,10 @@ const Shop = () => {
     setRangePrice(value);
   };
 
+  const handleCheckbox = (e) => {
+    console.log(e);
+  };
+
   useEffect(() => {
     setRangePrice(maxPrice);
   }, [maxPrice]);
@@ -157,7 +161,7 @@ const Shop = () => {
           <div className="mb-4 border-b px-5 pb-10">
             <h3 className="font-semibold text-xl">Product Categories</h3>
             <ul className="space-y-4 mt-4 text-black ">
-              {brands.slice(0, 10).map((br) => (
+              {category.slice(0, 10).map((br) => (
                 <li
                   onClick={() => setBrand(br)}
                   key={br}
@@ -166,16 +170,6 @@ const Shop = () => {
                   {br}
                 </li>
               ))}
-              {/* <li className="cursor-pointer hover:text-red-600">Bags (112)</li>
-              <li className="cursor-pointer hover:text-red-600">
-                Booking (32)
-              </li>
-              <li className="cursor-pointer hover:text-red-600">
-                Clothing (42)
-              </li>
-              <li className="cursor-pointer hover:text-red-600">Women (65)</li>
-              <li className="cursor-pointer hover:text-red-600">Men (13)</li>
-              <li className="cursor-pointer hover:text-red-600">Shoes (52)</li> */}
             </ul>
           </div>
 
@@ -216,12 +210,20 @@ const Shop = () => {
               </div>
             </div>
 
+            {/* filter by brand section */}
             <div>
-              <h3>Brands</h3>
-              <div>
-                <label>
-                  <input type="checkbox" id="myCheckbox"></input> <p></p>
-                </label>
+              <h3 className="text-xl mb-5">Brands</h3>
+              <div className="flex flex-col gap-3 pb-6">
+                {brands.slice(0, 6).map((brd) => (
+                  <label key={brd}>
+                    <input
+                      className="mr-2 cursor-pointer"
+                      onChange={() => handleCheckbox(brd)}
+                      type="checkbox"
+                    />
+                    {brd}
+                  </label>
+                ))}
               </div>
             </div>
 

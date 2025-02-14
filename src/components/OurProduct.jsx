@@ -33,7 +33,7 @@ const OurProduct = () => {
         {tabs.map((tab) => (
           <h1
             key={tab}
-            className={`text-2xl cursor-pointer pb-1 ${
+            className={`text-2xl cursor-pointer pb-1 transition-all hover:border-b-2 hover:border-black ${
               activeTab === tab
                 ? " border-b-2 border-black"
                 : "border-b-2  border-opacity-0"

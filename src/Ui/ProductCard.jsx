@@ -2,6 +2,7 @@
 import "./ProductCard.css";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 const ProductCard = ({ item }) => {
   // console.log(item.images);
   return (
@@ -14,7 +15,7 @@ const ProductCard = ({ item }) => {
         />
         <img
           className="rounded-lg absolute top-0 left-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100 "
-          src={item.images[3]}
+          src={item.images[0]}
           alt=""
         />
 
@@ -25,12 +26,14 @@ const ProductCard = ({ item }) => {
 
         {/* Icons (Hidden initially, appear on hover) */}
         <div className="absolute top-6 right-3 translate-x-5  duration-300 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all">
-          <p className="bg-white p-2 rounded-full cursor-pointer transition-all hover:bg-black hover:text-white">
-            <IoEyeOutline className="size-6"></IoEyeOutline>
-          </p>
-          <p className="bg-white p-2 rounded-full mt-3 cursor-pointer transition-all hover:bg-black hover:text-white">
+          <p className="bg-white p-2 rounded-full  cursor-pointer transition-all hover:bg-black hover:text-white">
             <FaRegHeart className="size-6"></FaRegHeart>
           </p>
+          <Link to={`/product/${item._id}`}>
+            <p className="bg-white p-2 mt-3 rounded-full cursor-pointer transition-all hover:bg-black hover:text-white">
+              <IoEyeOutline className="size-6"></IoEyeOutline>
+            </p>
+          </Link>
         </div>
       </div>
 
