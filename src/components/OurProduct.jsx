@@ -18,7 +18,7 @@ const OurProduct = () => {
     else if (activeTab === "On Sale") sort = "on-sale";
     console.log("sort from ", sort);
     publiceInstance
-      .get(`/products?fillter=${sort}`)
+      .get(`/products?filterType=${sort}`)
       .then((res) => {
         setProducts(res.data);
       })

@@ -8,7 +8,7 @@ const ProductCard = ({ item }) => {
   const [selectImage, setSelectImage] = useState(
     item?.available_colors[0]?.image
   );
-  console.log(item?.available_colors);
+  // console.log(item?.available_colors);
   return (
     <div className="group ">
       <div>

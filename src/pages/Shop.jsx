@@ -6,16 +6,13 @@ import useGetPublice from "../hooks/useGetPublice";
 import ProductCard from "../Ui/ProductCard";
 import PageCover from "../components/shared/PageCover";
 import { CiFilter } from "react-icons/ci";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+
   const [sort, setSort] = useState("");
-  const [size, setSize] = useState();
-  const [brand, setBrand] = useState();
-  console.log(brand);
 
   const allcategory = products.map((prod) => prod.category);
   const allBrands = products.map((brd) => brd.brand);
@@ -56,8 +53,17 @@ const Shop = () => {
     }
   }
 
+  const [size, setSize] = useState();
+  const [brand, setBrand] = useState();
+  const [cate, setCate] = useState();
   const [rangePrice, setRangePrice] = useState(maxPrice);
-  // console.log(rangePrice);
+  console.log(brand);
+  console.log(size);
+  console.log(cate);
+  console.log(rangePrice);
+
+  // const arrayoffilter = { brand, size, cate, rangePrice };
+  // console.log(arrayoffilter);
 
   const handleRangeValue = (e) => {
     let value = e.target.value;
@@ -65,7 +71,7 @@ const Shop = () => {
   };
 
   const handleCheckbox = (e) => {
-    console.log(e);
+    setBrand(e);
   };
 
   useEffect(() => {
@@ -77,15 +83,24 @@ const Shop = () => {
 
   const publiceInstance = useGetPublice();
   useEffect(() => {
+    let queryParams = `/products?sort=${sort}`;
+
+    // Only append the query parameters if they exist
+    if (cate) queryParams += `&category=${cate}`;
+    if (brand) queryParams += `&brand=${brand}`;
+    if (size) queryParams += `&size=${size}`;
+    if (minPrice !== Infinity) queryParams += `&minPrice=${minPrice}`; // Only add minPrice if it's not Infinity
+    if (rangePrice > 0) queryParams += `&maxPrice=${rangePrice}`;
+
     publiceInstance
-      .get(`/products?sort=${sort}`)
+      .get(queryParams)
       .then((res) => {
         setProducts(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [sort]);
+  }, [sort, cate, brand, size, minPrice, rangePrice]);
 
   return (
     <div>
@@ -163,7 +178,7 @@ const Shop = () => {
             <ul className="space-y-4 mt-4 text-black ">
               {category.slice(0, 10).map((br) => (
                 <li
-                  onClick={() => setBrand(br)}
+                  onClick={() => setCate(br)}
                   key={br}
                   className="cursor-pointer hover:text-red-600"
                 >
@@ -197,13 +212,15 @@ const Shop = () => {
               <h3 className="font-medium mb-3 text-xl">Size</h3>
               <div className="flex flex-wrap gap-2">
                 {["XS", "S", "M", "L", "XL", "2XL", "3XL", "Free Size"].map(
-                  (size) => (
+                  (sz) => (
                     <button
-                      onClick={() => setSize(size)}
-                      key={size}
-                      className="border p-3 rounded-full  hover:bg-gray-200"
+                      onClick={() => setSize(sz)}
+                      key={sz}
+                      className={`border p-3 rounded-full  hover:bg-black hover:text-white ${
+                        size === sz ? "bg-black text-white" : ""
+                      }`}
                     >
-                      <span>{size}</span>
+                      <span>{sz}</span>
                     </button>
                   )
                 )}
@@ -217,7 +234,9 @@ const Shop = () => {
                 {brands.slice(0, 6).map((brd) => (
                   <label key={brd}>
                     <input
-                      className="mr-2 cursor-pointer"
+                      className={`mr-2 cursor-pointer ${
+                        brand === brd ? "text-red-600" : ""
+                      }`}
                       onChange={() => handleCheckbox(brd)}
                       type="checkbox"
                     />
