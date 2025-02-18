@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable no-unused-vars */
+
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import useGetPublice from "../hooks/useGetPublice";
@@ -11,31 +12,24 @@ import { IoMdClose } from "react-icons/io";
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-
   const [sort, setSort] = useState("");
+  const [allCategories, setAllCategories] = useState([]);
+  const [allBrands, setAllBrands] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [size, setSize] = useState();
 
-  const allcategory = products.map((prod) => prod.category);
-  const allBrands = products.map((brd) => brd.brand);
-  // console.log(allBrands);
-  // console.log(allcategory);
+  useEffect(() => {
+    publiceInstance.get("/products").then((res) => {
+      setProducts(res.data);
 
-  let category = [];
-  for (let i = 0; i < allcategory.length; i++) {
-    let item = allcategory[i];
-    if (!category.includes(item)) {
-      category.push(item);
-    }
-  }
+      const categories = [...new Set(res.data.map((prod) => prod.category))];
+      setAllCategories(categories);
 
-  let brands = [];
-  for (let i = 0; i < allBrands.length; i++) {
-    let item = allBrands[i];
-    if (!brands.includes(item)) {
-      brands.push(item);
-    }
-  }
-  // console.log(brand);
-  // console.log(category);
+      const brands = [...new Set(res.data.map((prod) => prod.brand))];
+      setAllBrands(brands);
+    });
+  }, []);
 
   let maxPrice = 0;
   for (let i = 0; i < products.length; i++) {
@@ -53,54 +47,51 @@ const Shop = () => {
     }
   }
 
-  const [size, setSize] = useState();
-  const [brand, setBrand] = useState();
-  const [cate, setCate] = useState();
   const [rangePrice, setRangePrice] = useState(maxPrice);
-  console.log(brand);
-  console.log(size);
-  console.log(cate);
-  console.log(rangePrice);
-
-  // const arrayoffilter = { brand, size, cate, rangePrice };
-  // console.log(arrayoffilter);
 
   const handleRangeValue = (e) => {
     let value = e.target.value;
     setRangePrice(value);
   };
 
-  const handleCheckbox = (e) => {
-    setBrand(e);
+  const handleBrandSelection = (brand) => {
+    setSelectedBrands((prevBrands) =>
+      prevBrands.includes(brand)
+        ? prevBrands.filter((b) => b !== brand)
+        : [...prevBrands, brand]
+    );
   };
 
   useEffect(() => {
     setRangePrice(maxPrice);
   }, [maxPrice]);
 
-  // console.log(minPrice);
-  // console.log(maxPrice);
+  const resetFilters = () => {
+    setSelectedCategory(null);
+    setSelectedBrands([]);
+    setSize(null);
+    setRangePrice(maxPrice);
+    setSort("");
+  };
 
   const publiceInstance = useGetPublice();
   useEffect(() => {
     let queryParams = `/products?sort=${sort}`;
 
-    // Only append the query parameters if they exist
-    if (cate) queryParams += `&category=${cate}`;
-    if (brand) queryParams += `&brand=${brand}`;
+    if (selectedCategory) queryParams += `&category=${selectedCategory}`;
+    if (selectedBrands.length > 0) {
+      queryParams += `&brand=${selectedBrands.join(",")}`;
+    }
     if (size) queryParams += `&size=${size}`;
-    if (minPrice !== Infinity) queryParams += `&minPrice=${minPrice}`; // Only add minPrice if it's not Infinity
-    if (rangePrice > 0) queryParams += `&maxPrice=${rangePrice}`;
+    if (rangePrice) queryParams += `&maxPrice=${rangePrice}`;
 
     publiceInstance
       .get(queryParams)
       .then((res) => {
         setProducts(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [sort, cate, brand, size, minPrice, rangePrice]);
+      .catch((err) => console.log(err));
+  }, [sort, selectedCategory, selectedBrands, size, rangePrice]);
 
   return (
     <div>
@@ -176,13 +167,17 @@ const Shop = () => {
           <div className="mb-4 border-b px-5 pb-10">
             <h3 className="font-semibold text-xl">Product Categories</h3>
             <ul className="space-y-4 mt-4 text-black ">
-              {category.slice(0, 10).map((br) => (
+              {allCategories.slice(0, 10).map((category) => (
                 <li
-                  onClick={() => setCate(br)}
-                  key={br}
-                  className="cursor-pointer hover:text-red-600"
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`cursor-pointer hover:text-red-600 ${
+                    selectedCategory === category
+                      ? "text-red-600 font-bold"
+                      : ""
+                  }`}
                 >
-                  {br}
+                  {category}
                 </li>
               ))}
             </ul>
@@ -197,7 +192,6 @@ const Shop = () => {
                 min={minPrice}
                 max={maxPrice}
                 value={rangePrice}
-                // name="rangePrice"
                 onChange={handleRangeValue}
                 className="w-full text-black"
               />
@@ -211,19 +205,17 @@ const Shop = () => {
             <div className="mb-4 border-b pb-4">
               <h3 className="font-medium mb-3 text-xl">Size</h3>
               <div className="flex flex-wrap gap-2">
-                {["XS", "S", "M", "L", "XL", "2XL", "3XL", "Free Size"].map(
-                  (sz) => (
-                    <button
-                      onClick={() => setSize(sz)}
-                      key={sz}
-                      className={`border p-3 rounded-full  hover:bg-black hover:text-white ${
-                        size === sz ? "bg-black text-white" : ""
-                      }`}
-                    >
-                      <span>{sz}</span>
-                    </button>
-                  )
-                )}
+                {["XS", "S", "M", "L", "XL", "2XL", "3XL"].map((sz) => (
+                  <button
+                    onClick={() => setSize(sz)}
+                    key={sz}
+                    className={`border p-3 rounded-full  hover:bg-black hover:text-white ${
+                      size === sz ? "bg-black text-white" : ""
+                    }`}
+                  >
+                    <span>{sz}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -231,23 +223,25 @@ const Shop = () => {
             <div>
               <h3 className="text-xl mb-5">Brands</h3>
               <div className="flex flex-col gap-3 pb-6">
-                {brands.slice(0, 6).map((brd) => (
-                  <label key={brd}>
+                {allBrands.slice(0, 6).map((brand) => (
+                  <label key={brand}>
                     <input
-                      className={`mr-2 cursor-pointer ${
-                        brand === brd ? "text-red-600" : ""
-                      }`}
-                      onChange={() => handleCheckbox(brd)}
                       type="checkbox"
+                      checked={selectedBrands.includes(brand)} // Check if brand is selected
+                      onChange={() => handleBrandSelection(brand)}
+                      className="mr-2 cursor-pointer"
                     />
-                    {brd}
+                    {brand}
                   </label>
                 ))}
               </div>
             </div>
 
             {/* Reset Filters Button */}
-            <button className="w-full p-2 mt-4 bg-black text-white rounded-md">
+            <button
+              onClick={resetFilters}
+              className="w-full p-2 mt-4 bg-black text-white rounded-md"
+            >
               Reset Filters
             </button>
           </div>
