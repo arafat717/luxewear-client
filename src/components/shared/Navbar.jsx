@@ -6,10 +6,12 @@ import { BsBag } from "react-icons/bs";
 import { useContext, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { AuthContext } from "../../Provider/AuthProvider";
+import useCart from "../../hooks/useCart";
 
 const Navbar = () => {
   const { user, handleLogOut } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [cart] = useCart();
 
   return (
     <div className="sticky top-0 bg-white z-50">
@@ -83,11 +85,11 @@ const Navbar = () => {
               <IoMdHeartEmpty></IoMdHeartEmpty>
             </p>
           </Link>
-          <Link>
+          <Link to="/myorder">
             <div className="relative">
-              <p className="absolute -top-5 -right-1">
-                <span className=" bg-red-600 rounded-full px-1 pb-1 text-[12px] text-white">
-                  0
+              <p className="absolute -top-5 -right-2">
+                <span className=" bg-red-600 rounded-full px-2 pb-1 text-[12px] text-white">
+                  {cart?.length}
                 </span>
               </p>
               <BsBag></BsBag>

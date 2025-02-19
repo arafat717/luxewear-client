@@ -1,20 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useGetPublice from "../hooks/useGetPublice";
 import { CiHeart } from "react-icons/ci";
 import { LuEye } from "react-icons/lu";
+import ProductCard from "./ProductCard";
+import { AuthContext } from "../Provider/AuthProvider";
+import useCart from "../hooks/useCart";
+import Swal from "sweetalert2";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState();
+
   const [mainImage, setMainImage] = useState();
   const [selectedColor, setSelectedColor] = useState();
-  const [size, setSize] = useState("");
+  const [size, setSize] = useState("S");
   const [quen, setQuen] = useState(1);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const { user } = useContext(AuthContext);
+
+  // console.log(relatedProducts);
 
   const totalPrice = quen * product?.discount_price;
   const grandTotal = totalPrice.toFixed(2);
-  console.log(totalPrice);
+  // console.log(totalPrice);
 
   const id = useParams();
 
@@ -35,7 +44,45 @@ const ProductDetails = () => {
       setMainImage(res.data.available_colors[0]?.image);
       setSelectedColor(res.data.available_colors[0]?.name);
     });
+  }, [id]);
+
+  useEffect(() => {
+    publiceInstance
+      .get(`/products`)
+      .then((res) => {
+        setRelatedProducts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+
+  const [, refetch] = useCart();
+  const handlecart = async () => {
+    const cartinfo = {
+      email: user?.email,
+      name: product.name,
+      singlePrice: product.discount_price,
+      price: grandTotal,
+      quentity: quen,
+      image: product.available_colors,
+      size: size,
+      color: selectedColor,
+    };
+    await publiceInstance.post("/cart/add", cartinfo).then((res) => {
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        refetch();
+      }
+    });
+    console.log(cartinfo);
+  };
 
   return (
     <>
@@ -144,7 +191,10 @@ const ProductDetails = () => {
               </div>
             </div>
             <div className="flex gap-4 mt-5">
-              <button className="w-full border py-3 rounded-2xl bg-black text-white transition-all hover:bg-red-700 ">
+              <button
+                onClick={handlecart}
+                className="w-full border py-3 rounded-2xl bg-black text-white transition-all hover:bg-red-700 "
+              >
                 Add to cart -$ {grandTotal}
               </button>
               <button className="border px-3 rounded-full transition-all hover:bg-black hover:text-white">
@@ -189,6 +239,14 @@ const ProductDetails = () => {
               </div>
               <p className="mt-2">{rv?.comment}</p>
             </div>
+          ))}
+        </div>
+      </div>
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-center text-3xl underline">Ralated Products</h1>
+        <div className="grid md:grid-cols-4 grid-cols-2 gap-8 mt-10 mb-20 px-5">
+          {relatedProducts.slice(2, 6).map((item) => (
+            <ProductCard key={item._id} item={item}></ProductCard>
           ))}
         </div>
       </div>

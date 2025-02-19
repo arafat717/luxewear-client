@@ -227,7 +227,7 @@ const Shop = () => {
                   <label key={brand}>
                     <input
                       type="checkbox"
-                      checked={selectedBrands.includes(brand)} // Check if brand is selected
+                      checked={selectedBrands.includes(brand)}
                       onChange={() => handleBrandSelection(brand)}
                       className="mr-2 cursor-pointer"
                     />

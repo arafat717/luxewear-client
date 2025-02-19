@@ -16,7 +16,6 @@ const OurProduct = () => {
     if (activeTab === "New Arrivals") sort = "new-arrivals";
     else if (activeTab === "Best Seller") sort = "best-seller";
     else if (activeTab === "On Sale") sort = "on-sale";
-    console.log("sort from ", sort);
     publiceInstance
       .get(`/products?filterType=${sort}`)
       .then((res) => {
