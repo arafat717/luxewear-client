@@ -2,7 +2,7 @@
 import "./ProductCard.css";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import useGetPublice from "../hooks/useGetPublice";
@@ -13,30 +13,47 @@ const ProductCard = ({ item }) => {
   const [selectImage, setSelectImage] = useState(
     item?.available_colors[0]?.image
   );
+  const navigate = useNavigate();
   const [, refetch] = useCart();
   const publiceInstance = useGetPublice();
   const addtocart = async (cart) => {
-    const cartItem = {
-      email: user.email,
-      name: cart.name,
-      price: cart.discount_price,
-      quentity: 1,
-      color: cart.available_colors[0].name,
-      image: cart.available_colors,
-      size: cart.sizes[0],
-    };
-    await publiceInstance.post("/cart/add", cartItem).then((res) => {
-      if (res.data.insertedId) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Added Successfully!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        refetch();
-      }
-    });
+    if (user && user.email) {
+      const cartItem = {
+        email: user.email,
+        name: cart.name,
+        price: cart.discount_price,
+        quentity: 1,
+        color: cart.available_colors[0].name,
+        image: cart.available_colors,
+        size: cart.sizes[0],
+      };
+      await publiceInstance.post("/cart/add", cartItem).then((res) => {
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added Successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          refetch();
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Please Login Before Add To Cart",
+        text: "You won't be able to add product without login!",
+        icon: "",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Login!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return navigate("/login");
+        }
+      });
+    }
   };
 
   return (

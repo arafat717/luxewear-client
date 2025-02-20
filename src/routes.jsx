@@ -7,6 +7,7 @@ import Shop from "./pages/Shop";
 import Blog from "./pages/Blog";
 import ProductDetails from "./Ui/ProductDetails";
 import Cart from "./Ui/Cart";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
       },
       {
         path: "myorder",
-        element: <Cart></Cart>,
+        element: (
+          <PrivateRoute>
+            <Cart></Cart>
+          </PrivateRoute>
+        ),
       },
       {
         path: "blog",

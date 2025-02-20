@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PageCover from "./shared/PageCover";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
@@ -9,6 +9,9 @@ import Swal from "sweetalert2";
 const Login = () => {
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  console.log(from);
 
   const { loginUser } = useContext(AuthContext);
   const handleLogin = (e) => {
@@ -20,7 +23,7 @@ const Login = () => {
     loginUser(email, password)
       .then(() => {
         // const user = currentUser.user;
-        navigate("/");
+        navigate(from);
         Swal.fire({
           position: "top-end",
           icon: "success",

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PageCover from "./shared/PageCover";
 import { useContext, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -13,6 +13,9 @@ const Register = () => {
   const [error, setError] = useState("");
   console.log(error);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  console.log(from);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -28,7 +31,7 @@ const Register = () => {
     CreateUserWithEmailPass(email, password)
       .then(() => {
         // const user = currentUser.user;
-        navigate("/");
+        navigate(from);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -48,7 +51,7 @@ const Register = () => {
       <div className="max-w-7xl mx-auto py-20">
         <div className="grid md:grid-cols-2 items-center md:gap-0 gap-10">
           <form onSubmit={handleRegister} className="border-r px-10">
-            <h1 className="mb-5 text-2xl font-semibold">Login</h1>
+            <h1 className="mb-5 text-2xl font-semibold">Register</h1>
             <div className="flex flex-col gap-5">
               <input
                 className="py-3 px-4 rounded-lg bg-inherit border-gray-400 border"

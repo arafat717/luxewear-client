@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useGetPublice from "../hooks/useGetPublice";
 import { CiHeart } from "react-icons/ci";
 import { LuEye } from "react-icons/lu";
@@ -18,6 +18,7 @@ const ProductDetails = () => {
   const [quen, setQuen] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // console.log(relatedProducts);
 
@@ -59,29 +60,45 @@ const ProductDetails = () => {
 
   const [, refetch] = useCart();
   const handlecart = async () => {
-    const cartinfo = {
-      email: user?.email,
-      name: product.name,
-      singlePrice: product.discount_price,
-      price: grandTotal,
-      quentity: quen,
-      image: product.available_colors,
-      size: size,
-      color: selectedColor,
-    };
-    await publiceInstance.post("/cart/add", cartinfo).then((res) => {
-      if (res.data.insertedId) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        refetch();
-      }
-    });
-    console.log(cartinfo);
+    if (user && user.email) {
+      const cartinfo = {
+        email: user.email,
+        name: product.name,
+        singlePrice: product.discount_price,
+        price: grandTotal,
+        quentity: quen,
+        image: product.available_colors,
+        size: size,
+        color: selectedColor,
+      };
+      await publiceInstance.post("/cart/add", cartinfo).then((res) => {
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          refetch();
+        }
+      });
+      console.log(cartinfo);
+    } else {
+      Swal.fire({
+        title: "Please Login Before Add To Cart",
+        text: "You won't be able to add product without login!",
+        icon: "",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Login!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return navigate("/login");
+        }
+      });
+    }
   };
 
   return (
