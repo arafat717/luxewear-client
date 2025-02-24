@@ -55,6 +55,45 @@ const ProductCard = ({ item }) => {
       });
     }
   };
+  const addtoWishList = async (cart) => {
+    if (user && user.email) {
+      const wishItem = {
+        email: user.email,
+        name: cart.name,
+        original_price: cart.original_price,
+        discount_price: cart.discount_price,
+        quentity: 1,
+        available_colors: cart.available_colors,
+        sizes: cart.sizes,
+      };
+      await publiceInstance.post("/wish/add", wishItem).then((res) => {
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added Successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          refetch();
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Please Login Before Add To Cart",
+        text: "You won't be able to add product without login!",
+        icon: "",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Login!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return navigate("/login");
+        }
+      });
+    }
+  };
 
   return (
     <div className="group ">
@@ -85,7 +124,10 @@ const ProductCard = ({ item }) => {
 
           {/* Icons (Hidden initially, appear on hover) */}
           <div className="absolute top-6 right-3 translate-x-5  duration-300 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all">
-            <p className="bg-white p-2 rounded-full  cursor-pointer transition-all hover:bg-black hover:text-white">
+            <p
+              onClick={() => addtoWishList(item)}
+              className="bg-white p-2 rounded-full  cursor-pointer transition-all hover:bg-black hover:text-white"
+            >
               <FaRegHeart className="size-6"></FaRegHeart>
             </p>
             <Link to={`/product/${item._id}`}>

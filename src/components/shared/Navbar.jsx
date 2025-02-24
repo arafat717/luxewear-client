@@ -45,7 +45,7 @@ const Navbar = () => {
           >
             <li>Blog</li>
           </NavLink>
-          <NavLink>
+          <NavLink to="/aboutus">
             <li>About Us</li>
           </NavLink>
           <NavLink>
@@ -80,7 +80,7 @@ const Navbar = () => {
           {/* <p>
             <GoPerson></GoPerson>
           </p> */}
-          <Link>
+          <Link to="/wishlist">
             <p>
               <IoMdHeartEmpty></IoMdHeartEmpty>
             </p>
@@ -108,38 +108,74 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden fixed z-10 w-full bg-white border-t shadow-md px-5 pb-10">
           <div className="flex flex-col  items-start list-none gap-5 py-5  font-semibold text-black">
-            <NavLink to="/" className="border-b-2 w-full pb-4">
+            <NavLink
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className="border-b-2 w-full pb-4"
+            >
               <li>Home</li>
             </NavLink>
-            <NavLink to="/shop" className="border-b-2 w-full pb-4">
+            <NavLink
+              to="/shop"
+              onClick={() => setIsOpen(false)}
+              className="border-b-2 w-full pb-4"
+            >
               <li>Shop</li>
             </NavLink>
-            {/* <NavLink className="border-b-2 w-full pb-4">
-              <li>Products</li>
-            </NavLink> */}
-            <NavLink to="/blog" className="border-b-2 w-full pb-4">
+
+            <NavLink
+              to="/blog"
+              onClick={() => setIsOpen(false)}
+              className="border-b-2 w-full pb-4"
+            >
               <li>Blog</li>
             </NavLink>
-            <NavLink className="border-b-2 w-full pb-4">
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              className="border-b-2 w-full pb-4"
+            >
               <li>About Us</li>
             </NavLink>
-            <NavLink>
+            <NavLink onClick={() => setIsOpen(false)}>
               <li>Contact Us</li>
             </NavLink>
           </div>
+
           <div className="flex gap-5">
-            <button className="bg-gray-50 border border-gray-400 px-3 py-3">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="bg-gray-50 border border-gray-400 px-3 py-3"
+            >
+              <Link to="/myorder">
+                <div className="relative">
+                  <p className="absolute -top-5 -right-2">
+                    <span className=" bg-red-600 rounded-full px-2 pb-1 text-[12px] text-white">
+                      {cart?.length}
+                    </span>
+                  </p>
+                  <BsBag></BsBag>
+                </div>
+              </Link>
+            </button>
+
+            <button
+              onClick={() => setIsOpen(false)}
+              className="bg-gray-50 border border-gray-400 px-3 py-3"
+            >
               {" "}
-              <Link>
+              <Link to="/wishlist">
                 <p className="flex items-center gap-2">
                   <IoMdHeartEmpty className="size-7"></IoMdHeartEmpty>
                   <span>Wishlist</span>
                 </p>
               </Link>
             </button>
-            <button className="bg-gray-50 border border-gray-400 px-3 py-3">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="bg-gray-50 border border-gray-400 px-3 py-3"
+            >
               {" "}
-              <Link>
+              <Link to="login">
                 <p className="flex items-center gap-2">
                   <GoPerson className="size-7"></GoPerson>
                   <span>Login</span>

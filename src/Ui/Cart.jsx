@@ -3,6 +3,7 @@ import useCart from "../hooks/useCart";
 
 const Cart = () => {
   const [cart] = useCart();
+  console.log(cart);
 
   const subtotal = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
 
@@ -10,8 +11,8 @@ const Cart = () => {
   console.log(discountAndShippingPrice);
   console.log(subtotal);
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-3 gap-9 my-20">
-      <div className="col-span-2 w-full">
+    <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-9 my-20">
+      <div className="md:col-span-2 w-full">
         <div className="grid grid-cols-6 font-semibold mb-5 border-b-2 pb-4">
           <h1 className="col-span-2">Products</h1>
           <h1 className="col-span-1">Price</h1>
@@ -63,7 +64,7 @@ const Cart = () => {
           ))}
         </div>
       </div>
-      <div className="col-span-1 ">
+      <div className="md:col-span-1 ">
         <div className="bg-gray-100 p-7 rounded-xl">
           <h1 className="text-2xl font-semibold">Order Summery</h1>
           <div className="border-b-2 font-semibold flex justify-between py-5">

@@ -14,7 +14,7 @@ import axios from "axios";
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const CreateUserWithEmailPass = (email, password) => {
@@ -28,11 +28,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleLogOut = () => {
-    setLoading(true);
     signOut(auth)
       .then(() => {
-        setUser(null);
-        setLoading(false);
         console.log("loggedout successful");
       })
       .catch((error) => {
@@ -42,24 +39,27 @@ const AuthProvider = ({ children }) => {
 
   //   onAuthstatechange
   useEffect(() => {
+    // setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
+      setUser(currentUser);
+      if (currentUser?.email) {
+        console.log("from on outh:", currentUser);
         const user = { email: currentUser.email };
         axios
           .post("http://localhost:5000/jwt", user, { withCredentials: true })
-          .then((res) => console.log(res.data))
-          .catch((err) => console.error("JWT request error:", err));
+          .then((res) => console.log(res.data));
+        setLoading(false);
       } else {
-        setUser(null);
         axios
           .post("http://localhost:5000/logout", {}, { withCredentials: true })
           .then((res) => console.log(res.data));
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      return unsubscribe();
+    };
   }, []);
 
   const userinfo = {
@@ -67,6 +67,7 @@ const AuthProvider = ({ children }) => {
     CreateUserWithEmailPass,
     loginUser,
     handleLogOut,
+    setUser,
     loading,
   };
   return (

@@ -40,10 +40,10 @@ const ProductDetails = () => {
   const publiceInstance = useGetPublice();
 
   useEffect(() => {
-    publiceInstance.get(`/products/${id.id}`).then((res) => {
+    publiceInstance.get(`/products/${id?.id}`).then((res) => {
       setProduct(res.data);
-      setMainImage(res.data.available_colors[0]?.image);
-      setSelectedColor(res.data.available_colors[0]?.name);
+      setMainImage(res.data?.available_colors[0]?.image);
+      setSelectedColor(res.data?.available_colors[0]?.name);
     });
   }, [id]);
 
@@ -121,7 +121,7 @@ const ProductDetails = () => {
           <div className="col-span-4">
             <img
               className="rounded-md"
-              src={mainImage ? mainImage : product?.images[3]}
+              src={mainImage ? mainImage : product?.available_colors?.images[3]}
               alt=""
             />
           </div>
@@ -133,7 +133,7 @@ const ProductDetails = () => {
             {"★".repeat(Math.floor(product?.rating || 0))}
             {"☆".repeat(5 - Math.floor(product?.rating || 0))}{" "}
             <span className="text-sm my-2">
-              ( {product?.reviews.length} Reviews)
+              ( {product?.reviews?.length} Reviews)
             </span>
           </p>
           <div className="flex gap-5 my-3 items-center">
@@ -153,7 +153,7 @@ const ProductDetails = () => {
               Colors: <span className="font-semibold">{selectedColor}</span>
             </p>
             <div className="flex space-x-2 mt-2">
-              {product?.available_colors.map((color) => (
+              {product?.available_colors?.map((color) => (
                 <button
                   key={color.name}
                   className={`w-8 h-8 rounded-full border-2 ${
@@ -173,7 +173,7 @@ const ProductDetails = () => {
             {/* size section */}
             <h1 className="mt-5">selected size: {size}</h1>
             <div className="flex gap-5 mt-3">
-              {product?.sizes.map((siz) => (
+              {product?.sizes?.map((siz) => (
                 <p
                   className={`border px-4 py-2 rounded-full cursor-pointer hover:border-black ${
                     size === siz ? "bg-black text-white" : ""
@@ -230,12 +230,12 @@ const ProductDetails = () => {
           {"★".repeat(Math.floor(product?.rating || 0))}
           {"☆".repeat(5 - Math.floor(product?.rating || 0))}{" "}
           <span className="text-sm my-2">
-            ( {product?.reviews.length} Reviews)
+            ( {product?.reviews?.length} Reviews)
           </span>
         </p>
-        <h1 className="mt-14 text-2xl">{product?.reviews.length} Comments</h1>
+        <h1 className="mt-14 text-2xl">{product?.reviews?.length} Comments</h1>
         <div className="mt-10 ">
-          {product?.reviews.map((rv, index) => (
+          {product?.reviews?.map((rv, index) => (
             <div key={index}>
               <div className="flex items-center gap-4">
                 <div>
