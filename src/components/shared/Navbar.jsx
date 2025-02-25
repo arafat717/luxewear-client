@@ -45,7 +45,10 @@ const Navbar = () => {
           >
             <li>Blog</li>
           </NavLink>
-          <NavLink to="/aboutus">
+          <NavLink
+            className={({ isActive }) => `${isActive ? "text-red-700" : ""}`}
+            to="/aboutus"
+          >
             <li>About Us</li>
           </NavLink>
           <NavLink>

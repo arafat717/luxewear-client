@@ -34,7 +34,7 @@ const Introduction = () => {
     "Our Commitment",
   ];
   return (
-    <div className="max-w-7xl mx-auto grid md:grid-cols-2 my-20 gap-10">
+    <div className="max-w-7xl mx-auto grid md:grid-cols-2 my-20 gap-10 px-4">
       <div>
         <img
           className="rounded-xl"
@@ -43,14 +43,14 @@ const Introduction = () => {
         />
       </div>
       <div>
-        <h1 className="text-4xl font-semibold leading-normal	">
+        <h1 className="text-2xl md:text-4xl font-semibold leading-normal	">
           LuxeWear – Offering rare and beautiful items worldwide
         </h1>
-        <div className="flex border-b  justify-between gap-3 md:gap-10 mt-8">
+        <div className=" flex border-b  justify-between gap-3 md:gap-10 mt-8 ">
           {tabs.map((tab) => (
             <h1
               key={tab}
-              className={`cursor-pointer font-semibold transition-all hover:border-b-2 hover:border-red-600 ${
+              className={`cursor-pointer font-semibold  transition-all hover:border-b-2 hover:border-red-600 ${
                 activeTab === tab
                   ? " border-b-2 border-red-600"
                   : "  border-opacity-0"
@@ -78,15 +78,9 @@ const Introduction = () => {
             </motion.h1>
           </AnimatePresence>
         </div>
-        <motion.button
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 30, opacity: 0 }}
-          transition={{ duration: 0.1 }}
-          className="flex items-center gap-1 mt-6 px-6 border-black rounded-full py-4 bg-black text-white border font-semibold  transition hover:bg-inherit hover:text-black"
-        >
+        <button className="flex items-center gap-1 mt-6 px-6 border-black rounded-full py-4 bg-black text-white border font-semibold  transition hover:bg-inherit hover:text-black">
           <p>Read More</p>
-        </motion.button>
+        </button>
       </div>
     </div>
   );
