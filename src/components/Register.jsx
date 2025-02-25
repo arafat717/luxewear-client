@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Register = () => {
   const { CreateUserWithEmailPass } = useContext(AuthContext);
@@ -17,32 +18,43 @@ const Register = () => {
   const from = location.state?.from?.pathname || "/";
   console.log(from);
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     const confirmpass = form.confirmpass.value;
+    const role = null;
 
     if (password !== confirmpass) {
-      setError("Confirm Password not Matched");
-      return;
+      return setError("Confirm Password not Matched");
     }
-    CreateUserWithEmailPass(email, password)
-      .then(() => {
-        // const user = currentUser.user;
-        navigate(from);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "SignUp successful",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+
+    try {
+      // Create user in Firebase or any authentication service
+      await CreateUserWithEmailPass(email, password);
+
+      // Send user data to the server
+      const userData = { email, role };
+      const response = await axios.post(
+        "http://localhost:5000/user/add",
+        userData
+      );
+
+      console.log("Server Response:", response.data);
+
+      // Navigate and show success message
+      navigate(from);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "SignUp successful",
+        showConfirmButton: false,
+        timer: 1500,
       });
+    } catch (error) {
+      console.error("Error:", error.response?.data || error.message);
+    }
   };
 
   return (
@@ -98,6 +110,7 @@ const Register = () => {
                   )}
                 </p>
               </div>
+              <p className="text-red-500">{error}</p>
             </div>
             <div className="flex items-center justify-between mt-4">
               <div>

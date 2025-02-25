@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { AuthContext } from "../../Provider/AuthProvider";
 import useCart from "../../hooks/useCart";
+import { MdDashboardCustomize } from "react-icons/md";
 
 const Navbar = () => {
   const { user, handleLogOut } = useContext(AuthContext);
@@ -26,13 +27,21 @@ const Navbar = () => {
         <div className=" hidden md:flex justify-center items-center list-none gap-7  font-semibold text-black">
           <NavLink
             to="/"
-            className={({ isActive }) => ` ${isActive ? "text-red-700" : ""}`}
+            className={({ isActive }) =>
+              `transition-all hover:text-red-700 ${
+                isActive ? "text-red-700" : ""
+              }`
+            }
           >
             <li>Home</li>
           </NavLink>
           <NavLink
             to="/shop"
-            className={({ isActive }) => ` ${isActive ? "text-red-700" : ""}`}
+            className={({ isActive }) =>
+              `transition-all hover:text-red-700 ${
+                isActive ? "text-red-700" : ""
+              }`
+            }
           >
             <li>Shop</li>
           </NavLink>
@@ -41,35 +50,62 @@ const Navbar = () => {
           </NavLink> */}
           <NavLink
             to="/blog"
-            className={({ isActive }) => `${isActive ? "text-red-700" : ""}`}
+            className={({ isActive }) =>
+              `transition-all hover:text-red-700 ${
+                isActive ? "text-red-700" : ""
+              }`
+            }
           >
             <li>Blog</li>
           </NavLink>
           <NavLink
-            className={({ isActive }) => `${isActive ? "text-red-700" : ""}`}
+            className={({ isActive }) =>
+              `transition-all hover:text-red-700 ${
+                isActive ? "text-red-700" : ""
+              }`
+            }
             to="/aboutus"
           >
             <li>About Us</li>
           </NavLink>
           <NavLink
             to="/contact"
-            className={({ isActive }) => `${isActive ? "text-red-700" : ""}`}
+            className={({ isActive }) =>
+              `transition-all hover:text-red-700 ${
+                isActive ? "text-red-700" : ""
+              }`
+            }
           >
             <li>Contact Us</li>
           </NavLink>
+          {user && (
+            <NavLink
+              to="/myaccount"
+              className={({ isActive }) =>
+                `transition-all hover:text-red-700 border-l-2  border-black ${
+                  isActive ? "text-red-700" : ""
+                }`
+              }
+            >
+              <li className="flex items-center gap-1">
+                <MdDashboardCustomize className="size-5"></MdDashboardCustomize>
+                Account
+              </li>
+            </NavLink>
+          )}
         </div>
         <div className="hidden md:flex justify-center items-center gap-5 text-2xl">
           {user ? (
             <button
               onClick={handleLogOut}
-              className="bg-gray-50 border border-gray-400 px-3 py-3"
+              className="bg-gray-50 border border-gray-400 px-3 py-3 transition-all hover:border-red-600 hover:text-red-600"
             >
               <p className="flex items-center gap-2">
                 <span className="text-sm">Log Out</span>
               </p>
             </button>
           ) : (
-            <button className="bg-gray-50 border border-gray-400 px-3 py-3">
+            <button className="bg-gray-50 border border-gray-400 px-3 py-3 transition-all hover:border-red-600 hover:text-red-600">
               <Link to="/login">
                 <p className="flex items-center gap-2">
                   <GoPerson className="size-5"></GoPerson>
@@ -91,7 +127,7 @@ const Navbar = () => {
               <IoMdHeartEmpty></IoMdHeartEmpty>
             </p>
           </Link>
-          <Link to="/myorder">
+          <Link to="/myaccount/cart">
             <div className="relative">
               <p className="absolute -top-5 -right-2">
                 <span className=" bg-red-600 rounded-full px-2 pb-1 text-[12px] text-white">
@@ -137,14 +173,34 @@ const Navbar = () => {
               <li>Blog</li>
             </NavLink>
             <NavLink
+              to="aboutus"
               onClick={() => setIsOpen(false)}
               className="border-b-2 w-full pb-4"
             >
               <li>About Us</li>
             </NavLink>
-            <NavLink onClick={() => setIsOpen(false)}>
+            <NavLink
+              to="contact"
+              className="border-b-2 w-full pb-4"
+              onClick={() => setIsOpen(false)}
+            >
               <li>Contact Us</li>
             </NavLink>
+            {user && (
+              <NavLink
+                to="/myaccount"
+                className={({ isActive }) =>
+                  `mb-10 transition-all hover:text-red-700 border-l-2  border-black ${
+                    isActive ? "text-red-700" : ""
+                  }`
+                }
+              >
+                <li className="flex items-center gap-1">
+                  <MdDashboardCustomize className="size-5"></MdDashboardCustomize>
+                  Account
+                </li>
+              </NavLink>
+            )}
           </div>
 
           <div className="flex gap-5">

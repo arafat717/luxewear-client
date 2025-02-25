@@ -11,6 +11,10 @@ import PrivateRoute from "./PrivateRoute";
 import WishList from "./pages/WishList";
 import AboutPage from "./pages/AboutPage";
 import ContactUs from "./pages/ContactUs";
+import MyAccount from "./pages/MyAccount";
+import AccountDetails from "./components/DashboardComponents/AccountDetails";
+import MyOrders from "./components/DashboardComponents/MyOrders";
+import MyAddress from "./components/DashboardComponents/MyAddress";
 
 const router = createBrowserRouter([
   {
@@ -21,14 +25,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home></Home>,
       },
-      {
-        path: "myorder",
-        element: (
-          <PrivateRoute>
-            <Cart></Cart>
-          </PrivateRoute>
-        ),
-      },
+
       {
         path: "blog",
         element: <Blog></Blog>,
@@ -64,6 +61,32 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register></Register>,
+      },
+    ],
+  },
+  {
+    path: "/myaccount",
+    element: <MyAccount></MyAccount>,
+    children: [
+      {
+        path: "",
+        element: <AccountDetails></AccountDetails>,
+      },
+      {
+        path: "orders",
+        element: <MyOrders></MyOrders>,
+      },
+      {
+        path: "address",
+        element: <MyAddress></MyAddress>,
+      },
+      {
+        path: "cart",
+        element: (
+          <PrivateRoute>
+            <Cart></Cart>
+          </PrivateRoute>
+        ),
       },
     ],
   },
