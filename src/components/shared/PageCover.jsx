@@ -3,7 +3,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 const PageCover = ({ title }) => {
   return (
-    <div className="bg-gray-300 ">
+    <div className="bg-[rgb(238,235,235)] ">
       <div className="flex flex-col items-center py-24 text-black">
         <h1 className="text-xl font-semibold mb-4 ">{title}</h1>
         <div className="flex items-center gap-2">

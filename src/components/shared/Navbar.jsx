@@ -51,7 +51,10 @@ const Navbar = () => {
           >
             <li>About Us</li>
           </NavLink>
-          <NavLink>
+          <NavLink
+            to="/contact"
+            className={({ isActive }) => `${isActive ? "text-red-700" : ""}`}
+          >
             <li>Contact Us</li>
           </NavLink>
         </div>
