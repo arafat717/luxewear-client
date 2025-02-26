@@ -10,8 +10,8 @@ import useCart from "../hooks/useCart";
 import Swal from "sweetalert2";
 
 const ProductDetails = () => {
-  const [product, setProduct] = useState();
-
+  const [product, setProduct] = useState("");
+  console.log(product);
   const [mainImage, setMainImage] = useState();
   const [selectedColor, setSelectedColor] = useState();
   const [size, setSize] = useState("S");
@@ -26,7 +26,8 @@ const ProductDetails = () => {
   const grandTotal = totalPrice.toFixed(2);
   // console.log(totalPrice);
 
-  const id = useParams();
+  const { id } = useParams();
+  console.log(id);
 
   const handleDecreaseQuentity = () => {
     if (quen > 1) {
@@ -40,12 +41,12 @@ const ProductDetails = () => {
   const publiceInstance = useGetPublice();
 
   useEffect(() => {
-    publiceInstance.get(`/products/${id?.id}`).then((res) => {
+    publiceInstance.get(`/products/${id}`).then((res) => {
       setProduct(res.data);
       setMainImage(res.data?.available_colors[0]?.image);
       setSelectedColor(res.data?.available_colors[0]?.name);
     });
-  }, [id]);
+  }, [id, publiceInstance]);
 
   useEffect(() => {
     publiceInstance

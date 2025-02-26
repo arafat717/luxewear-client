@@ -80,7 +80,7 @@ const MyAccount = () => {
             <span>
               <FaLocationDot className="size-5"></FaLocationDot>
             </span>
-            <p>My Address</p>
+            <p>My Wish-list</p>
           </NavLink>
           <NavLink
             to="/myaccount/cart"

@@ -7,9 +7,13 @@ const Cart = () => {
 
   const subtotal = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
 
-  const discountAndShippingPrice = subtotal + 15;
-  console.log(discountAndShippingPrice);
-  console.log(subtotal);
+  let discountAndShippingPrice = 0;
+  if (subtotal) {
+    discountAndShippingPrice = subtotal + 15;
+  } else {
+    discountAndShippingPrice = 0;
+  }
+
   return (
     <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-9 my-20">
       <div className="md:col-span-2 w-full">
@@ -20,49 +24,62 @@ const Cart = () => {
           <h1 className="col-span-1">Total Price</h1>
           <h1 className="col-span-1"></h1>
         </div>
-        <div>
-          {cart?.map((crt) => (
-            <div
-              key={crt._id}
-              className="my-4 border-b-2 pb-4 grid grid-cols-6 w-full gap-6 items-center"
-            >
-              <div className="flex items-center gap-4 col-span-2">
-                <div>
-                  <img
-                    className="w-24 rounded-lg"
-                    src={crt?.image[0].image}
-                    alt=""
-                  />
+        {cart.length > 0 ? (
+          <div>
+            {cart?.map((crt) => (
+              <div
+                key={crt._id}
+                className="my-4 border-b-2 pb-4 grid grid-cols-6 w-full gap-6 items-center"
+              >
+                <div className="flex items-center gap-4 col-span-2">
+                  <div>
+                    <img
+                      className="w-24 rounded-lg"
+                      src={crt?.image[0].image}
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <h1 className="font-semibold"> {crt?.name}</h1>
+                    <p>Color: {crt?.color}</p>
+                    <p>Size: {crt?.size}</p>
+                  </div>
                 </div>
                 <div>
-                  <h1 className="font-semibold"> {crt?.name}</h1>
-                  <p>Color: {crt?.color}</p>
-                  <p>Size: {crt?.size}</p>
+                  <h1 className="font-semibold">
+                    ${crt?.singlePrice ? crt?.singlePrice : crt?.price}
+                  </h1>
+                </div>
+                <div>
+                  <h1 className="font-semibold">{crt?.quentity}</h1>
+                </div>
+                <div>
+                  <h1 className="font-semibold">
+                    ${crt?.price ? crt?.price : crt?.singlePrice}
+                  </h1>
+                </div>
+                <div className="col-span-1">
+                  <p>
+                    <span className="border border-red-700 text-red-700 cursor-pointer px-2 py-1 rounded-full hover:bg-red-700 hover:text-white">
+                      x
+                    </span>
+                  </p>
                 </div>
               </div>
-              <div>
-                <h1 className="font-semibold">
-                  ${crt?.singlePrice ? crt?.singlePrice : crt?.price}
-                </h1>
-              </div>
-              <div>
-                <h1 className="font-semibold">{crt?.quentity}</h1>
-              </div>
-              <div>
-                <h1 className="font-semibold">
-                  ${crt?.price ? crt?.price : crt?.singlePrice}
-                </h1>
-              </div>
-              <div className="col-span-1">
-                <p>
-                  <span className="border border-red-700 text-red-700 cursor-pointer px-2 py-1 rounded-full hover:bg-red-700 hover:text-white">
-                    x
-                  </span>
-                </p>
-              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center mt-40">
+            <h1 className="text-2xl font-semibold">No Product added yet</h1>
+            <div className="flex items-center justify-center">
+              <Link to="/shop">
+                <button className="flex items-center gap-1 mt-6 px-6 border-black rounded-full py-4 bg-black text-white border font-semibold  transition hover:bg-inherit hover:text-black">
+                  <p>Shop Now</p>
+                </button>
+              </Link>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
       <div className="md:col-span-1 ">
         <div className="bg-gray-100 p-7 rounded-xl">
@@ -81,7 +98,7 @@ const Cart = () => {
           </div>
           <div className="flex text-2xl font-semibold mt-5 justify-between">
             <h1>Total</h1>
-            <h1>${discountAndShippingPrice}</h1>
+            <h1>${discountAndShippingPrice.toFixed(2)}</h1>
           </div>
           <div className="mt-5">
             <label>

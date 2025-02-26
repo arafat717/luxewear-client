@@ -21,6 +21,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     const form = e.target;
+    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
     const confirmpass = form.confirmpass.value;
@@ -35,7 +36,7 @@ const Register = () => {
       await CreateUserWithEmailPass(email, password);
 
       // Send user data to the server
-      const userData = { email, role };
+      const userData = { email, role, name };
       const response = await axios.post(
         "http://localhost:5000/user/add",
         userData
@@ -65,6 +66,13 @@ const Register = () => {
           <form onSubmit={handleRegister} className="border-r px-10">
             <h1 className="mb-5 text-2xl font-semibold">Register</h1>
             <div className="flex flex-col gap-5">
+              <input
+                className="py-3 px-4 rounded-lg bg-inherit border-gray-400 border"
+                placeholder="Emter your name*"
+                type="text"
+                name="name"
+                id=""
+              />
               <input
                 className="py-3 px-4 rounded-lg bg-inherit border-gray-400 border"
                 placeholder="Emter your email*"
