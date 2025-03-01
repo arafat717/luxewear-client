@@ -15,6 +15,11 @@ import MyAccount from "./pages/MyAccount";
 import AccountDetails from "./components/DashboardComponents/AccountDetails";
 import MyOrders from "./components/DashboardComponents/MyOrders";
 import MyAddress from "./components/DashboardComponents/MyAddress";
+import ProductPage from "./pages/ProductPage";
+import BlogPageAdmin from "./pages/BlogPageAdmin";
+import InstragramPage from "./pages/InstragramPage";
+import ProductAdd from "./pages/ProductAdd";
+import AllUsers from "./pages/AllUsers";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +84,26 @@ const router = createBrowserRouter([
       {
         path: "address",
         element: <MyAddress></MyAddress>,
+      },
+      {
+        path: "product-list",
+        element: <ProductPage></ProductPage>,
+      },
+      {
+        path: "admin-blog",
+        element: <BlogPageAdmin></BlogPageAdmin>,
+      },
+      {
+        path: "admin-instragram",
+        element: <InstragramPage></InstragramPage>,
+      },
+      {
+        path: "admin-product-add",
+        element: <ProductAdd></ProductAdd>,
+      },
+      {
+        path: "admin-all-users",
+        element: <AllUsers></AllUsers>,
       },
       {
         path: "cart",

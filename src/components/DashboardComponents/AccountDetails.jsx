@@ -11,7 +11,8 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const AccountDetails = () => {
   const publiceInstance = useGetPublice();
   const { user } = useContext(AuthContext);
-  const [ourUser, setOurUser] = useState("");
+  const [ourUser, setOurUser] = useState();
+  console.log(ourUser);
   const [selectedCountry, setSelectedCountry] = useState("");
 
   // load user data to show

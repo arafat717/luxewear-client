@@ -13,11 +13,15 @@ import { FaShoppingBag } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoCart } from "react-icons/io5";
 import useCart from "../hooks/useCart";
+import { IoMdListBox } from "react-icons/io";
+import { FaSquareInstagram } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa";
 
 const MyAccount = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [cart] = useCart();
-
+  const isAdmin = true;
+  // const isAdmin = false;
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -42,64 +46,138 @@ const MyAccount = () => {
         </div>
 
         <nav className="space-y-4">
-          <NavLink
-            to=""
-            end
-            className={({ isActive }) =>
-              ` px-4 py-2 rounded-lg flex items-center gap-2 ${
-                isActive ? "bg-blue-600" : "hover:bg-blue-600"
-              }`
-            }
-          >
-            <span>
-              <RiAccountCircleFill className="size-5"></RiAccountCircleFill>
-            </span>
-            <p>My Account</p>
-          </NavLink>
-          <NavLink
-            to="/myaccount/orders"
-            className={({ isActive }) =>
-              ` px-4 py-2 rounded-lg flex items-center gap-2 ${
-                isActive ? "bg-blue-600" : "hover:bg-blue-600"
-              }`
-            }
-          >
-            <span>
-              <FaShoppingBag className="size-5"></FaShoppingBag>
-            </span>
-            <p>My Orders</p>
-          </NavLink>
-          <NavLink
-            to="/myaccount/address"
-            className={({ isActive }) =>
-              ` px-4 py-2 rounded-lg flex items-center gap-2 ${
-                isActive ? "bg-blue-600" : "hover:bg-blue-600"
-              }`
-            }
-          >
-            <span>
-              <FaLocationDot className="size-5"></FaLocationDot>
-            </span>
-            <p>My Wish-list</p>
-          </NavLink>
-          <NavLink
-            to="/myaccount/cart"
-            className={({ isActive }) =>
-              ` px-4 py-2 rounded-lg flex items-center gap-2 ${
-                isActive ? "bg-blue-600" : "hover:bg-blue-600"
-              }`
-            }
-          >
-            <span>
-              <IoCart className="size-5"></IoCart>
-            </span>
-            <p>
-              Cart
-              <span className="bg-red-700 px-1 ml-1 rounded-full">
-                {cart?.length}
-              </span>
-            </p>
-          </NavLink>
+          {isAdmin ? (
+            <>
+              <NavLink
+                to=""
+                end
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <RiAccountCircleFill className="size-5"></RiAccountCircleFill>
+                </span>
+                <p>My Account</p>
+              </NavLink>
+              <NavLink
+                to="/myaccount/admin-all-users"
+                end
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <FaUsers className="size-5"></FaUsers>
+                </span>
+                <p>Users</p>
+              </NavLink>
+              <NavLink
+                to="/myaccount/product-list"
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <IoMdListBox className="size-5"></IoMdListBox>
+                </span>
+                <p>Proucts</p>
+              </NavLink>
+              <NavLink
+                to="/myaccount/admin-blog"
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <FaBlogger className="size-5"></FaBlogger>
+                </span>
+                <p>Blog</p>
+              </NavLink>
+              <NavLink
+                to="/myaccount/admin-instragram"
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <FaSquareInstagram className="size-5"></FaSquareInstagram>
+                </span>
+                <p>Instragram</p>
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to=""
+                end
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <RiAccountCircleFill className="size-5"></RiAccountCircleFill>
+                </span>
+                <p>My Account</p>
+              </NavLink>
+              <NavLink
+                to="/myaccount/orders"
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <FaShoppingBag className="size-5"></FaShoppingBag>
+                </span>
+                <p>My Orders</p>
+              </NavLink>
+              <NavLink
+                to="/myaccount/address"
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <FaLocationDot className="size-5"></FaLocationDot>
+                </span>
+                <p>My Wish-list</p>
+              </NavLink>
+              <NavLink
+                to="/myaccount/cart"
+                className={({ isActive }) =>
+                  ` px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    isActive ? "bg-blue-600" : "hover:bg-blue-600"
+                  }`
+                }
+              >
+                <span>
+                  <IoCart className="size-5"></IoCart>
+                </span>
+                <p>
+                  Cart
+                  <span className="bg-red-700 px-1 ml-1 rounded-full">
+                    {cart?.length}
+                  </span>
+                </p>
+              </NavLink>
+            </>
+          )}
 
           <hr />
           <NavLink
