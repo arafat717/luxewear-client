@@ -5,9 +5,9 @@ import { FaRegHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
-import useGetPublice from "../hooks/useGetPublice";
 import useCart from "../hooks/useCart";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 const ProductCard = ({ item }) => {
   const { user } = useContext(AuthContext);
   const [selectImage, setSelectImage] = useState(
@@ -15,7 +15,7 @@ const ProductCard = ({ item }) => {
   );
   const navigate = useNavigate();
   const [, refetch] = useCart();
-  const publiceInstance = useGetPublice();
+  const axiosSecure = useAxiosSecure();
   const addtocart = async (cart) => {
     if (user && user.email) {
       const cartItem = {
@@ -27,7 +27,7 @@ const ProductCard = ({ item }) => {
         image: cart.available_colors,
         size: cart.sizes[0],
       };
-      await publiceInstance.post("/cart/add", cartItem).then((res) => {
+      await axiosSecure.post("/cart/add", cartItem).then((res) => {
         if (res.data.insertedId) {
           Swal.fire({
             position: "top-end",
@@ -66,7 +66,7 @@ const ProductCard = ({ item }) => {
         available_colors: cart.available_colors,
         sizes: cart.sizes,
       };
-      await publiceInstance.post("/wish/add", wishItem).then((res) => {
+      await axiosSecure.post("/wish/add", wishItem).then((res) => {
         if (res.data.insertedId) {
           Swal.fire({
             position: "top-end",

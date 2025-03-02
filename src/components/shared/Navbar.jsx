@@ -224,7 +224,6 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
               className="bg-gray-50 border border-gray-400 px-3 py-3"
             >
-              {" "}
               <Link to="/wishlist">
                 <p className="flex items-center gap-2">
                   <IoMdHeartEmpty className="size-7"></IoMdHeartEmpty>
@@ -236,7 +235,6 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
               className="bg-gray-50 border border-gray-400 px-3 py-3"
             >
-              {" "}
               <Link to="login">
                 <p className="flex items-center gap-2">
                   <GoPerson className="size-7"></GoPerson>

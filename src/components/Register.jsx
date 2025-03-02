@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PageCover from "./shared/PageCover";
@@ -37,22 +38,20 @@ const Register = () => {
 
       // Send user data to the server
       const userData = { email, role, name };
-      const response = await axios.post(
-        "http://localhost:5000/user/add",
-        userData
-      );
-
-      console.log("Server Response:", response.data);
+      const res = await axios
+        .post("http://localhost:5000/user/add", userData)
+        .then(() => {
+          navigate(from);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "SignUp successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        });
 
       // Navigate and show success message
-      navigate(from);
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "SignUp successful",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
     }

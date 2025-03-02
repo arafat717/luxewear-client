@@ -1,32 +1,54 @@
-import { useEffect, useState } from "react";
 import useGetPublice from "../hooks/useGetPublice";
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 import { MdSystemUpdateAlt } from "react-icons/md";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const ProductPage = () => {
   const publiceInstance = useGetPublice();
-  const [product, setProducts] = useState([]);
+  const axiosSecure = useAxiosSecure();
 
-  useEffect(() => {
-    publiceInstance
-      .get(`/products`)
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const { refetch, data: product = [] } = useQuery({
+    queryKey: ["cart"],
+    queryFn: async () => {
+      const res = await publiceInstance.get(`/products`);
+      return res.data;
+    },
+  });
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/products/${id}`).then(() => {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        });
+      }
+    });
+  };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto ">
       <Link to="/myaccount/admin-product-add">
         <button className="flex items-center gap-1 mt-6 px-6 border-black rounded-full py-4 hover:bg-black text-black border font-semibold uppercase transition  hover:text-white">
           <p>Add Product</p>
         </button>
       </Link>
-      <div className="mt-10">
+      <div className="mt-5">
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-200 shadow-lg rounded-lg">
             <thead>
@@ -73,7 +95,10 @@ const ProductPage = () => {
                         </button>
                       </Link>
 
-                      <button className="p-3 border border-white hover:border-black rounded-2xl transition-all text-white  duration-300 bg-red-600   hover:bg-white hover:text-red-700">
+                      <button
+                        onClick={() => handleDelete(pd?._id)}
+                        className="p-3 border border-white hover:border-black rounded-2xl transition-all text-white  duration-300 bg-red-600   hover:bg-white hover:text-red-700"
+                      >
                         <AiFillDelete className="size-5"></AiFillDelete>
                       </button>
                     </div>
@@ -83,6 +108,7 @@ const ProductPage = () => {
             </tbody>
           </table>
         </div>
+        <div className="mt-10"></div>
       </div>
     </div>
   );

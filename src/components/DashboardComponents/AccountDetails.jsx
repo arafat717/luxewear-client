@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import useGetPublice from "../../hooks/useGetPublice";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { countries } from "../../utils/Country";
+import Swal from "sweetalert2";
 
 const image_hosting_key = import.meta.env.VITE_IMG_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -56,10 +57,18 @@ const AccountDetails = () => {
           country,
           image: imageUrl,
         };
-        const insetdata = await publiceInstance.put(
-          `/update-user/${user?.email}`,
-          updatedUserData
-        );
+        const insetdata = await publiceInstance
+          .put(`/update-user/${user?.email}`, updatedUserData)
+          .then((res) => {
+            console.log(res.data);
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Your work has been saved",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
       } else {
         console.error("Image upload failed:", res.data);
       }

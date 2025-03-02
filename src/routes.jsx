@@ -20,6 +20,7 @@ import BlogPageAdmin from "./pages/BlogPageAdmin";
 import InstragramPage from "./pages/InstragramPage";
 import ProductAdd from "./pages/ProductAdd";
 import AllUsers from "./pages/AllUsers";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -71,39 +72,75 @@ const router = createBrowserRouter([
   },
   {
     path: "/myaccount",
-    element: <MyAccount></MyAccount>,
+    element: (
+      <PrivateRoute>
+        <MyAccount></MyAccount>
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "",
-        element: <AccountDetails></AccountDetails>,
+        element: (
+          <PrivateRoute>
+            <AccountDetails></AccountDetails>
+          </PrivateRoute>
+        ),
       },
       {
         path: "orders",
-        element: <MyOrders></MyOrders>,
+        element: (
+          <PrivateRoute>
+            <MyOrders></MyOrders>
+          </PrivateRoute>
+        ),
       },
       {
         path: "address",
-        element: <MyAddress></MyAddress>,
+        element: (
+          <PrivateRoute>
+            <MyAddress></MyAddress>
+          </PrivateRoute>
+        ),
       },
       {
         path: "product-list",
-        element: <ProductPage></ProductPage>,
+        element: (
+          <AdminRoute>
+            <ProductPage></ProductPage>
+          </AdminRoute>
+        ),
       },
       {
         path: "admin-blog",
-        element: <BlogPageAdmin></BlogPageAdmin>,
+        element: (
+          <AdminRoute>
+            <BlogPageAdmin></BlogPageAdmin>
+          </AdminRoute>
+        ),
       },
       {
         path: "admin-instragram",
-        element: <InstragramPage></InstragramPage>,
+        element: (
+          <AdminRoute>
+            <InstragramPage></InstragramPage>
+          </AdminRoute>
+        ),
       },
       {
         path: "admin-product-add",
-        element: <ProductAdd></ProductAdd>,
+        element: (
+          <AdminRoute>
+            <ProductAdd></ProductAdd>
+          </AdminRoute>
+        ),
       },
       {
         path: "admin-all-users",
-        element: <AllUsers></AllUsers>,
+        element: (
+          <AdminRoute>
+            <AllUsers></AllUsers>
+          </AdminRoute>
+        ),
       },
       {
         path: "cart",

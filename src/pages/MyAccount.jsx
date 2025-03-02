@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { MdDashboardCustomize } from "react-icons/md";
@@ -16,12 +16,17 @@ import useCart from "../hooks/useCart";
 import { IoMdListBox } from "react-icons/io";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { FaUsers } from "react-icons/fa";
+import useAdmin from "../hooks/useAdmin";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const MyAccount = () => {
+  const [isAdmin, isAdminLoading] = useAdmin();
   const [isOpen, setIsOpen] = useState(false);
+  const { handleLogOut } = useContext(AuthContext);
   const [cart] = useCart();
-  const isAdmin = true;
-  // const isAdmin = false;
+
+  isAdminLoading && <h1>Loading...</h1>;
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -246,7 +251,8 @@ const MyAccount = () => {
             <p> Contact</p>
           </NavLink>
           <NavLink
-            to="/blog"
+            to="/"
+            onClick={handleLogOut}
             className={({ isActive }) =>
               ` px-4 py-2 rounded-lg flex items-center gap-2 ${
                 isActive ? "bg-blue-600" : "hover:bg-blue-600"

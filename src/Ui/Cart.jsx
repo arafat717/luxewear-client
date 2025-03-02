@@ -1,18 +1,44 @@
 import { Link } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { MdDelete } from "react-icons/md";
 
 const Cart = () => {
-  const [cart] = useCart();
-  console.log(cart);
+  const [cart, refetch] = useCart();
+  const axiosSecure = useAxiosSecure();
 
   const subtotal = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
 
   let discountAndShippingPrice = 0;
   if (subtotal) {
-    discountAndShippingPrice = subtotal + 15;
+    discountAndShippingPrice = subtotal + 20;
   } else {
     discountAndShippingPrice = 0;
   }
+
+  const handledelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/cart/${id}`).then(() => {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        });
+      }
+    });
+  };
 
   return (
     <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-9 my-20">
@@ -59,11 +85,16 @@ const Cart = () => {
                   </h1>
                 </div>
                 <div className="col-span-1">
-                  <p>
-                    <span className="border border-red-700 text-red-700 cursor-pointer px-2 py-1 rounded-full hover:bg-red-700 hover:text-white">
-                      x
-                    </span>
-                  </p>
+                  <div className="flex">
+                    <p
+                      className="bg-red-600 transition-all border items-center flex p-2 rounded-full cursor-pointer text-white hover:border-black hover:text-red-600 hover:bg-inherit"
+                      onClick={() => handledelete(crt?._id)}
+                    >
+                      <span className="">
+                        <MdDelete className="size-7"></MdDelete>
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}

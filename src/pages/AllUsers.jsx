@@ -1,23 +1,59 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import useGetPublice from "../hooks/useGetPublice";
 import { MdSystemUpdateAlt } from "react-icons/md";
 import { AiFillDelete } from "react-icons/ai";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
+import { FaUsers } from "react-icons/fa";
 
 const AllUsers = () => {
-  const publiceInstance = useGetPublice();
-  const [users, setusers] = useState([]);
-  console.log(users);
+  const axiosSecure = useAxiosSecure();
 
-  useEffect(() => {
-    publiceInstance
-      .get(`/users`)
-      .then((res) => {
-        setusers(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    },
+  });
+
+  const handleUserDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/user/${id}`).then((res) => {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        });
+      }
+    });
+  };
+
+  const handleMakeAdmin = (id) => {
+    axiosSecure.patch(`/user/admin/${id}`).then((res) => {
+      refetch();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
       });
-  }, []);
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="overflow-x-auto">
@@ -53,12 +89,22 @@ const AllUsers = () => {
                 </td>
                 <td className="py-3 px-6 ">{pd?.country}</td>
                 <td>
-                  <button className="p-3 border hover:border-black rounded-2xl transition-all text-white  duration-300 bg-purple-600   hover:bg-white hover:text-black">
-                    <MdSystemUpdateAlt className="size-5"></MdSystemUpdateAlt>
-                  </button>
+                  {pd?.role ? (
+                    "admin"
+                  ) : (
+                    <button
+                      onClick={() => handleMakeAdmin(pd?._id)}
+                      className="p-3 border hover:border-black rounded-2xl transition-all text-white  duration-300 bg-purple-600   hover:bg-white hover:text-black"
+                    >
+                      <FaUsers className="size-5"></FaUsers>
+                    </button>
+                  )}
                 </td>
                 <td>
-                  <button className="p-3 border border-white hover:border-black rounded-2xl transition-all text-white  duration-300 bg-red-600   hover:bg-white hover:text-red-700">
+                  <button
+                    onClick={() => handleUserDelete(pd?._id)}
+                    className="p-3 border border-white hover:border-black rounded-2xl transition-all text-white  duration-300 bg-red-600   hover:bg-white hover:text-red-700"
+                  >
                     <AiFillDelete className="size-5"></AiFillDelete>
                   </button>
                 </td>
