@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import "./ProductCard.css";
 import { IoEyeOutline } from "react-icons/io5";
@@ -57,15 +58,10 @@ const ProductCard = ({ item }) => {
   };
   const addtoWishList = async (cart) => {
     if (user && user.email) {
-      const wishItem = {
-        email: user.email,
-        name: cart.name,
-        original_price: cart.original_price,
-        discount_price: cart.discount_price,
-        quentity: 1,
-        available_colors: cart.available_colors,
-        sizes: cart.sizes,
-      };
+      const { _id, ...wishItem } = cart;
+      wishItem.email = user.email;
+      wishItem.quentity = 1;
+      console.log(wishItem);
       await axiosSecure.post("/wish/add", wishItem).then((res) => {
         if (res.data.insertedId) {
           Swal.fire({

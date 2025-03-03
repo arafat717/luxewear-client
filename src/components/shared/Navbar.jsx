@@ -122,7 +122,7 @@ const Navbar = () => {
           {/* <p>
             <GoPerson></GoPerson>
           </p> */}
-          <Link to="/wishlist">
+          <Link to="/myaccount/address">
             <p>
               <IoMdHeartEmpty></IoMdHeartEmpty>
             </p>

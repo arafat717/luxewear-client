@@ -8,7 +8,6 @@ import Blog from "./pages/Blog";
 import ProductDetails from "./Ui/ProductDetails";
 import Cart from "./Ui/Cart";
 import PrivateRoute from "./PrivateRoute";
-import WishList from "./pages/WishList";
 import AboutPage from "./pages/AboutPage";
 import ContactUs from "./pages/ContactUs";
 import MyAccount from "./pages/MyAccount";
@@ -21,6 +20,7 @@ import InstragramPage from "./pages/InstragramPage";
 import ProductAdd from "./pages/ProductAdd";
 import AllUsers from "./pages/AllUsers";
 import AdminRoute from "./AdminRoute";
+import WishDetails from "./Ui/WishDetails";
 
 const router = createBrowserRouter([
   {
@@ -36,17 +36,14 @@ const router = createBrowserRouter([
         path: "blog",
         element: <Blog></Blog>,
       },
-      {
-        path: "wishlist",
-        element: (
-          <PrivateRoute>
-            <WishList></WishList>
-          </PrivateRoute>
-        ),
-      },
+
       {
         path: "/product/:id",
         element: <ProductDetails></ProductDetails>,
+      },
+      {
+        path: "/wish/:id",
+        element: <WishDetails></WishDetails>,
       },
       {
         path: "/shop",

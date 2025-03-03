@@ -68,7 +68,7 @@ const MyAddress = () => {
                 </td>
                 <td>
                   <div className="flex items-center gap-6">
-                    <Link to={`/product/${pd?._id}`}>
+                    <Link to={`/wish/${pd?._id}`}>
                       <button className="p-3 border border-black rounded-2xl transition-all text-white  duration-300 bg-black   hover:bg-white hover:text-black">
                         Details
                       </button>
