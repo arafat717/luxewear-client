@@ -138,9 +138,20 @@ const Cart = () => {
             </label>
           </div>
           <div className="mt-5 text-center">
-            <button className="bottom-5 left-6 w-5/6 py-2 rounded-2xl transition-all  duration-300  bg-black text-white hover:bg-red-600">
-              ADD TO CART
-            </button>
+            {cart.length ? (
+              <Link to="/myaccount/payment">
+                <button className="bottom-5 left-6 w-5/6 py-2 rounded-2xl transition-all  duration-300  bg-black text-white hover:bg-red-600">
+                  Process To Checkout
+                </button>
+              </Link>
+            ) : (
+              <button
+                disabled
+                className="bottom-5 left-6 w-5/6 py-2 disabled:cursor-not-allowed disabled:hover:bg-gray-400 rounded-2xl transition-all  duration-300  bg-black text-white hover:bg-red-600"
+              >
+                Process To Checkout
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -76,11 +76,11 @@ const ProductPage = () => {
                   <td className="py-3 px-6">{pd?.name}</td>
                   <td className="py-3 px-6">
                     <span className="line-through">
-                      ${pd?.original_price?.toFixed(2)}
+                      ${Number(pd?.original_price || 0).toFixed(2)}
                     </span>
                   </td>
                   <td className="py-3 px-6 text-red-600">
-                    ${pd?.discount_price.toFixed(2)}
+                    ${Number(pd?.discount_price || 0).toFixed(2)}
                   </td>
                   <td>
                     <div className="flex gap-3 items-center">

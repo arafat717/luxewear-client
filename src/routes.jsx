@@ -21,6 +21,8 @@ import ProductAdd from "./pages/ProductAdd";
 import AllUsers from "./pages/AllUsers";
 import AdminRoute from "./AdminRoute";
 import WishDetails from "./Ui/WishDetails";
+import BlogAdd from "./pages/BlogAdd";
+import Payment from "./pages/Payment";
 
 const router = createBrowserRouter([
   {
@@ -130,6 +132,18 @@ const router = createBrowserRouter([
             <ProductAdd></ProductAdd>
           </AdminRoute>
         ),
+      },
+      {
+        path: "admin-blog-add",
+        element: (
+          <AdminRoute>
+            <BlogAdd></BlogAdd>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "payment",
+        element: <Payment></Payment>,
       },
       {
         path: "admin-all-users",

@@ -8,6 +8,7 @@ import ProductCard from "./ProductCard";
 import { AuthContext } from "../Provider/AuthProvider";
 import useCart from "../hooks/useCart";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState("");
@@ -39,6 +40,7 @@ const ProductDetails = () => {
   };
 
   const publiceInstance = useGetPublice();
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     publiceInstance.get(`/products/${id}`).then((res) => {
@@ -72,7 +74,7 @@ const ProductDetails = () => {
         size: size,
         color: selectedColor,
       };
-      await publiceInstance.post("/cart/add", cartinfo).then((res) => {
+      await axiosSecure.post("/cart/add", cartinfo).then((res) => {
         if (res.data.insertedId) {
           Swal.fire({
             position: "top-end",
