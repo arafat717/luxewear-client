@@ -12,7 +12,7 @@ const Cart = () => {
 
   let discountAndShippingPrice = 0;
   if (subtotal) {
-    discountAndShippingPrice = subtotal + 20;
+    discountAndShippingPrice = subtotal - 20;
   } else {
     discountAndShippingPrice = 0;
   }

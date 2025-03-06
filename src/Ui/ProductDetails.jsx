@@ -67,6 +67,7 @@ const ProductDetails = () => {
       const cartinfo = {
         email: user.email,
         name: product.name,
+        itemId: product._id,
         singlePrice: product.discount_price,
         price: grandTotal,
         quentity: quen,

@@ -19,7 +19,7 @@ const ImageBanner = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex === 0 ? 1 : 0));
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);

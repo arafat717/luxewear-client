@@ -21,6 +21,7 @@ const ProductCard = ({ item }) => {
     if (user && user.email) {
       const cartItem = {
         email: user.email,
+        itemId: cart._id,
         name: cart.name,
         price: cart.discount_price,
         quentity: 1,
@@ -60,7 +61,7 @@ const ProductCard = ({ item }) => {
     if (user && user.email) {
       const { _id, ...wishItem } = cart;
       wishItem.email = user.email;
-      wishItem.quentity = 1;
+      (wishItem.itemId = _id), (wishItem.quentity = 1);
       console.log(wishItem);
       await axiosSecure.post("/wish/add", wishItem).then((res) => {
         if (res.data.insertedId) {
