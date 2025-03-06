@@ -31,8 +31,3 @@ LuxeWear is a modern eCommerce platform specializing in clothing and fashion. It
 - MongoDB
 - JWT Authentication
 
-## Installation & Setup
-
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/yourusername/luxewear.git
