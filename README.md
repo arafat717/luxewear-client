@@ -2,7 +2,7 @@
 
 LuxeWear is a modern eCommerce platform specializing in clothing and fashion. It provides a seamless shopping experience with role-based dashboards for both users and administrators. The application is built using the MERN stack and incorporates JWT for secure API authentication and Firebase for user authentication.
 
-[Visit my website](https://www.example.com)
+(https://luxe-wear.web.app)
 
 
 ## Features
